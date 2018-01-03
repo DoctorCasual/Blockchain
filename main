@@ -1,0 +1,54 @@
+from models.Blockchain import Blockchain
+from models.Block import Block
+import datetime
+
+# Aanmaken van de blockchain
+bitcoin = Blockchain()
+################################################
+#   FUNCTIONS
+################################################
+
+
+def make_transaction(sender, receiver, amount):
+    index = len(bitcoin.chain)
+    date = datetime.datetime.now().strftime("%d/%m/%Y")
+    data = {"sender": sender, "receiver": receiver, "amount": amount}
+    bitcoin.add_block(Block(index, date, data))
+
+
+################################################
+#   CLI
+################################################
+print("####################")
+print("COMMAND LIST")
+print("####################")
+print("n: Add a new transaction")
+print("v: Check if the blockchain is valid")
+print("p: Print all blockchain transactions")
+print("####################")
+
+while 1:
+    command = input()
+    if command == 'n':
+        sender = input("Give the name of the sender: ")
+        receiver = input("Give the name of the reveiver: ")
+        amount = input("Give the amount of bitcoins to send: ")
+        make_transaction(sender, receiver, amount)
+        print("The transaction was added succesfully!\n")
+
+    if command == 'v':
+        if bitcoin.validate_chain():
+            print("The chain is valid and has not been tampered with\n")
+        else:
+            print("The chain is invalid! It looks like someone tampered with it\n")
+
+    if command == 'p':
+        for i in range(len(bitcoin.chain)):
+            print("####################")
+            print("TRANSACTION {}".format(i))
+            print("####################")
+            print(bitcoin.chain[i])
+            print("####################\n")
+
+
+
